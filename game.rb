@@ -12,8 +12,11 @@ class Game
 
   def start
     puts "Game Start!"
-    @cards.map {|card| puts("#{card.index}")}
-    @players.each_value {|player| puts("#{player.name}")}
+
+    deal_cards
+    @players.each_value do |player|
+      puts "#{player.name}: #{player.hand.compact.map { |hand| hand.index }}"
+    end
   end
 
   private
@@ -33,6 +36,15 @@ class Game
       players[index.to_sym] = Player.new("player_#{index}")
     end
     players
+  end
+
+  def deal_cards
+    @cards.shuffle.each_slice(4) do |cards|
+      @players[:a].hand << cards[0]
+      @players[:b].hand << cards[1]
+      @players[:c].hand << cards[2]
+      @players[:d].hand << cards[3]
+    end
   end
 end
 
